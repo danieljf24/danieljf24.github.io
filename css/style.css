@@ -56,7 +56,7 @@ img{max-width:100%;}
 	width:100%;
 }
 .logo{
-	float:left;
+	float:center;
 }
 .logo a{
 	font-family: 'gandhi_sansregular';
