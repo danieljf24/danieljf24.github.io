@@ -44,6 +44,7 @@ img{max-width:100%;}
 }
 .content {
 	margin-top: 72px;
+	/*background: #F5F5F5;*/
 }
 /*---start-header---*/
 .header{
@@ -56,7 +57,7 @@ img{max-width:100%;}
 	width:100%;
 }
 .logo{
-	float:center;
+	float:left;
 }
 .logo a{
 	font-family: 'gandhi_sansregular';
@@ -271,8 +272,8 @@ img{max-width:100%;}
 .grid3-left p{
 	font-family: 'gandhi_sansregular';
 	color: #2A323A;
-	font-size: 1em;
-	line-height: 1.8em;
+	font-size: 1.2em;
+	line-height: 1.5em;
 	padding-bottom: 10px;
 	width: 98%;
 }
@@ -284,7 +285,7 @@ img{max-width:100%;}
 	box-shadow: 0px 0px 10px rgba(136, 136, 136, 0.14);
 }
 .grid3-content{
-	/*width: 65%;*/
+	width: 70%;
 	margin:0 auto;
 	margin-top: 10px;
 }
@@ -310,7 +311,7 @@ img{max-width:100%;}
 	font-family: 'gandhi_sansregular';
 	color: #2A323A;
 	font-size: 1.2em;
-	line-height: 1.8em;
+	line-height: 1.5em;
 	padding-bottom: 10px;
 	width: 98%;
 }
@@ -590,8 +591,9 @@ img{max-width:100%;}
 
 
 .purebibtex {
-  font-family: monospace;
-  font-size: 1.1em;
+  font-family: 'gandhi_sansregular';
+  color: #2A323A;
+  font-size: 1em;
   line-height: 1.5em;
   border: 1px solid #DDDDDD;
   background: none repeat scroll 0 0 #F5F5F5;

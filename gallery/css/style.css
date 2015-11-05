@@ -320,6 +320,17 @@ ul.callbacks_tabs.callbacks2_tabs {
 	text-align: center;
 	padding: 2em 0px 2em 0px;
 }
+
+.free h1 {
+	text-align: center;
+    font-family: 'gandhi_sansregular';
+	color: #2A323A;
+    font-size: 1.8em;
+    line-height: 1.5em;
+	font-weight: 500;
+	margin: 0;
+}
+
 .free-main {
 	text-align:center;
 }
@@ -516,6 +527,7 @@ ul#filters {
 		display: -webkit-inline-box;
 	}
 #filters li span {
+    font-family: 'gandhi_sansregular';
 	display: block;
 	padding: 17px 50px;
 	text-decoration: none;
