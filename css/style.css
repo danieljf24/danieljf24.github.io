@@ -159,13 +159,24 @@ img{max-width:100%;}
 	line-height: 1.5em;
 	text-align: left;
 }
+
+.grid2 h5{
+	font-family: 'gandhi_sansregular';
+	color: #2A323A;
+	font-size: 1.2em;
+	line-height: 1.5em;
+	text-align: left;
+	padding: 15px 0px 0px 15px;
+	margin: 0px 3px;
+}
+
 .grid2 ul li{
 	font-family: 'gandhi_sansregular';
 	text-align: left;
 	font-size: 1.2em;
 	padding: 15px 0px 0px 15px;
 	margin: 0px 3px;
-	white-space:nowrap;
+	display：inline;
 }
 /*.grid2 ul li a,.grid2 ul li img{
 	display:block;
