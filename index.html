@@ -29,8 +29,8 @@
 					<li class="active"><a href="#me" class="scroll">Me</a></li>
 					<!-- <li><a href="#biography" class="scroll">Biography</a></li> -->
 					<li><a href="#publication" class="scroll">Publication</a></li>
-					<li><a href="./gallery/gallery.html">Gallery</a></li>
-					<li><a href="http://blog.csdn.net/danieljianfeng">Blog</a></li>
+					<!-- <li><a href="./gallery/gallery.html">Gallery</a></li>
+					<li><a href="http://blog.csdn.net/danieljianfeng">Blog</a></li> -->
 				</ul>
 			</div>
 			<div class="clear"> </div>
@@ -49,13 +49,13 @@
 		<div class="grid2" id="biography">
 			<h3>Biography</h3>
 			<p>
-				I am currently a third year PhD student at school of computer science and technology, Zhejiang University,
+				I am currently a fourth year PhD student at school of computer science and technology, Zhejiang University,
 				working with Prof. Duanqing Xu.
-                My research direction is cross-media image retrieval, a key research problem in web image retrieval. 
+                My research direction is cross-media computing, including cross-media retrieval, image captioning and video captioning. 
                 I am also interested in Deep learning, Computer Vision and Natural Language Processing.
                 My research aims to deep understand images, texts, as well as their relations.
 				Recently, I'm studying in multimedia computing lab at Renmin University of China as a visiting student, 
-				under the supervision of <a href="http://www.mmc.ruc.edu.cn/people?id=14">Dr. Xirong Li</a>.
+				under the supervision of <a href="http://lixirong.net/">Dr. Xirong Li</a>.
 				Before that, I got my BS degree from Zhejiang University of Technology. 
 			</p>
 			<!-- <ul>
@@ -90,43 +90,15 @@
 						* 21-26 June, 2014: Student Volunteer in <a href="http://www.icml.cc/2014/">ICML 2014</a>.
 					</li>
 				</ul> -->
+
+				<h5>* 15-19 Oct, 2016: One paper accepted by <a href="http://www.acmmm.org/2016/">ACM MM 2016</a>. </h5>
+				<h5>* 23 Apr, 2016: One paper is available on <a href="https://arxiv.org/abs/1604.06838">arXiv</a>. </h5>
 				<h5>* 26-30 Oct, 2015: One paper accepted by <a href="http://www.acmmm.org/2015/">ACM MM 2015</a>. </h5>
 				<h5>* 21-26 Jun, 2014: Student Volunteer in <a href="http://www.icml.cc/2014/">ICML 2014</a>. </h5>
 			</div>
 	    </div>
 
 
-
-
-		<div class="grid3" id="publication">
-
-			<div class="grid3-year"> <h3> Publication <h3> </div>
-			<div class="grid3-header">
-				<h4>Image Retrieval by Cross-Media Relevance Fusion</h4>
-			</div>
-			<div class="grid3-content">
-				<div class="grid3-left">
-					<h3>Abstract</h3>
-					<p>
-						How to estimate cross-media relevance between a given query and 
-						an unlabeled image is a key question in the MSR-Bing Image Retrieval Challenge. 
-						We answer the question by proposing cross-media relevance fusion, 
-						a conceptually simple framework that exploits the power of individual methods for 
-						cross-media relevance estimation. Four base cross-media relevance functions are investigated, 
-						and later combined by weights optimized on the development set. 
-					</p>
-                    <p>  <font color="color: #665cbe;"> <b> ACM MM 2015 </b> </font></p>
-					<a class="button" href="./projects/mm2015/mm2015.html"> Project </a>
-					<a class="button" href="projects/mm2015/data/p173-dong.pdf"> PDF </a>
-					<a class="button" href="https://github.com/danieljf24/cmrf/"> Code </a>
-					<a class="button" href="projects/mm2015/data/dong_mm2015.pdf"> Presentation </a>
-				</div>
-				<div class="grid3-right">
-					<img src="./projects/mm2015/images/framework.jpg" title="project-name" />
-				</div>
-				<div class="clear"> </div>
-			</div>
-		</div>	
 
 
 
@@ -141,12 +113,137 @@
 						* June, 2013: Outstanding graduate of Zhejiang Province (Top 1%).
 					</li>
 				</ul> -->
+				<h5>* Oct, 2016: Ranked 1st on Description Generation task of <a href="#">TrecVid 2016</a> in terms of the METEOR metric. </h5>
+				<h5>* Oct, 2016: Ranked 1st on Matching and Ranking task of <a href="#">TrecVid 2016</a>. </h5>
+				<h5>* Jun, 2016: Ranked 4th on <a href="http://research.microsoft.com/en-US/projects/irc/">Video to Language Challenge</a>. </h5>
 				<h5>* Jul, 2015: Ranked 1st on image retrieval task of <a href="http://research.microsoft.com/en-US/projects/irc/">MSR-Bing Image Retrieval Challenge</a>. </h5>
 				<h5>* Jun, 2013: Outstanding graduate of Zhejiang Province (Top 1%).</h5>
 				<h5>* Jun, 2013: University-wide outstanding bachelor thesis award of Zhejiang University of Technology. </h5>
-				<h5>* Aug, 2012: Third prize of China Students Service Outstanding Innovation Competition. </h5>
+				<!-- <h5>* Aug, 2012: Third prize of China Students Service Outstanding Innovation Competition. </h5> -->
 			</div>
 	    </div>
+
+
+
+
+		<div class="grid3" id="publication">
+
+			<div class="grid3-year"> <h3> Publication <h3> </div>
+
+
+
+			<div class="grid3-header">
+				<h4>Word2VisualVec: Cross-Media Retrieval by Visual Feature Prediction </h4>
+			</div>
+			<div class="grid3-content">
+				<div class="grid3-left">
+					<h3>Abstract</h3>
+					<p>
+						This paper attacks the challenging problem of cross-media retrieval. That is, given an image find the text best describing its content, or the other way around. Different from existing works, which either rely on a joint space, or a text space, we propose to perform cross-media retrieval in a visual space only. We contribute Word2VisualVec, a deep neural network architecture that learns to predict a deep visual encoding of textual input. We discuss its architecture for prediction of CaffeNet and GoogleNet features, as well as its loss functions for learning from text/image pairs in large-scale click-through logs and image sentences. Experiments on the Clickture-Lite and Flickr8K corpora demonstrate the robustness for both Text-to-Image and Image-to-Text retrieval, outperforming the state-of-the-art on both accounts. Interestingly, an embedding in predicted visual feature space is also highly effective when searching in text only. </p>
+                    <p>  <font color="color: #665cbe;"> <b> <a href="https://arxiv.org/abs/1604.06838">arXiv </a></b> </font></p>
+					<!-- <a class="button" href="./projects/mm2015/mm2015.html"> Project </a> -->
+					<a class="button" href="projects/arXiv/p1082-dong.pdf"> PDF </a>
+					<!-- <a class="button" href="https://github.com/danieljf24/cmrf/"> Code </a>
+					<a class="button" href="projects/mm2015/data/dong_mm2015.pdf"> Presentation </a> -->
+				</div>
+				<div class="grid3-right">
+					<img src="./projects/arXiv/arxiv_framework.jpg" title="project-name" />
+				</div>
+				<div class="clear"> </div>
+			</div>
+
+
+
+
+			<div class="grid3-header">
+				<h4>Early Embedding and Late Reranking for Video Captioning</h4>
+			</div>
+			<div class="grid3-content">
+				<div class="grid3-left">
+					<h3>Abstract</h3>
+					<p>
+						This paper describes our solution for the MSR Video to Language Challenge. We start from the popular ConvNet + LSTM model, which we extend with two novel modules. One is early embedding, which enriches the current low-level input to LSTM by tag embeddings. The other is late reranking, for re-scoring generated sentences in terms of their relevance to a specific video. The modules are inspired by recent works on image captioning, repurposed and redesigned for video. As experiments on the MSR-VTT validation set show, the joint use of these two modules add a clear improvement over a non-trivial ConvNet + LSTM baseline under four performance metrics. The viability of the proposed solution is further confirmed by the blind test by the organizers. Our system is ranked at the 4th place in terms of overall performance, while scoring the best CIDEr-D, which measures the human-likeness of generated captions. </p>
+                    <p>  <font color="color: #665cbe;"> <b> <a href="http://dl.acm.org/citation.cfm?id=2984064">ACM MM 2016</a> </b> </font></p>
+					<!-- <a class="button" href="./projects/mm2015/mm2015.html"> Project </a> -->
+					<a class="button" href="projects/mm2016/p1082-dong.pdf"> PDF </a>
+					<!-- <a class="button" href="https://github.com/danieljf24/cmrf/"> Code </a>
+					<a class="button" href="projects/mm2015/data/dong_mm2015.pdf"> Presentation </a> -->
+				</div>
+				<div class="grid3-right">
+					<img src="./projects/mm2016/mm2016_framework.jpg" title="project-name" />
+				</div>
+				<div class="clear"> </div>
+			</div>
+
+
+            <div class="grid3-header">
+				<h4>Adding Chinese Captions to Images</h4>
+			</div>
+			<div class="grid3-content">
+				<div class="grid3-left">
+					<h3>Abstract</h3>
+					<p>
+						This paper extends research on automated image captioning in the dimension of language, studying how to generate
+						Chinese sentence descriptions for unlabeled images. To evaluate image captioning in this novel context, we present
+						Flickr8k-CN, a bilingual extension of the popular Flickr8k set. The new multimedia dataset can be used to quantitatively
+						assess the performance of Chinese captioning and English-Chinese machine translation. The possibility of reusing
+						existing English data and models via machine translation is investigated. Our study reveals to some extent that
+						a computer can master two distinct languages, English and Chinese, at a similar level for describing the visual world.
+						Data is publicly available at http://tinyurl.com/flickr8kcn </p>
+                    <p>  <font color="color: #665cbe;"> <b> <a href="http://dl.acm.org/citation.cfm?id=2912049">ACM ICMR 2016 </a> </b> </font></p>
+					<!-- <a class="button" href="./projects/mm2015/mm2015.html"> Project </a> -->
+					<a class="button" href="projects/icmr2016/p271-li.pdf"> PDF </a>
+					<a class="button" href="http://lixirong.net/datasets/flickr8kcn"> Dataset </a>
+					<!-- <a class="button" href="https://github.com/danieljf24/cmrf/"> Code </a>
+					<a class="button" href="projects/mm2015/data/dong_mm2015.pdf"> Presentation </a> -->
+				</div>
+				<div class="grid3-right">
+					<img src="./projects/icmr2016/framework.jpg" title="project-name" />
+				</div>
+				<div class="clear"> </div>
+			</div>
+
+
+
+            <div class="grid3-header">
+				<h4>Image Retrieval by Cross-Media Relevance Fusion</h4>
+			</div>
+			<div class="grid3-content">
+				<div class="grid3-left">
+					<h3>Abstract</h3>
+					<p>
+						How to estimate cross-media relevance between a given query and 
+						an unlabeled image is a key question in the MSR-Bing Image Retrieval Challenge. 
+						We answer the question by proposing cross-media relevance fusion, 
+						a conceptually simple framework that exploits the power of individual methods for 
+						cross-media relevance estimation. Four base cross-media relevance functions are investigated, 
+						and later combined by weights optimized on the development set. 
+					</p>
+                    <p>  <font color="color: #665cbe;"> <b> <a href="http://dl.acm.org/citation.cfm?id=2809929">ACM MM 2015</a> </b> </font></p>
+					<a class="button" href="./projects/mm2015/mm2015.html"> Project </a>
+					<a class="button" href="projects/mm2015/data/p173-dong.pdf"> PDF </a>
+					<a class="button" href="https://github.com/danieljf24/cmrf/"> Code </a>
+					<a class="button" href="http://lixirong.net/datasets/mm2015cmrf"> Dataset </a>
+					<a class="button" href="projects/mm2015/data/dong_mm2015.pdf"> Presentation </a>
+				</div>
+				<div class="grid3-right">
+					<img src="./projects/mm2015/images/framework.jpg" title="project-name" />
+				</div>
+				<div class="clear"> </div>
+			</div>
+
+
+
+
+
+		</div>	
+
+
+
+
+
+
+
 
 
 
