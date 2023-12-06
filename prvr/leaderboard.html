@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         * {
+            /* font-family:  Century Gothic,CenturyGothic,AppleGothic,sans-serif;; */
+            font-family: 'Times New Roman', Times, serif;
+            /* font-style: oblique; */
+            margin: 0%;
+            padding: 0%;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            text-align: center;
+            width: 1200px;
+            margin-left:auto;  
+            margin-right:auto;
+        }
+        .container > div {
+            width: 1100px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            text-align: left;
+
+        }
+        .title_{
+            text-align: left;
+        }
+        span.title {
+            display: block;
+            text-align: left;
+            padding-bottom: 5px;
+            font-size: 30px;
+            
+        }
+        span.title_content{
+            padding-top: 5px;
+            display: block;
+            text-align: justify;
+            padding-bottom: 5px;
+            font-size: 20px;
+        }
+        .benchmarks > .dataset, .methods> table tr th {
+            border-bottom: 1.5px solid rgb(229, 229, 229);
+        }
+        .benchmarks > th{
+            font-weight: lighter;
+        }
+        .benchmarks > table tr th, .methods> table tr th{
+            border-bottom: 1.5px solid rgb(229, 229, 229);
+        }
+        .dataset_info > th, .method_info > th{
+            font-size: 18px;
+            font-weight: lighter;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        a > img {
+            padding-top: 10px;
+        }
+        a > img:hover {
+            transition: 0.5s;
+            transform: scale(120%, 120%);
+            -webkit-transform: scale(120%, 120%);
+            -moz-transform: scale(120%, 120%);
+        }
+        .button {
+            /* padding: 1rem 2rem; */
+            border-color: #1296db;
+            background-color: #fff;
+            background-image: radial-gradient(ellipse at bottom, #f6f6f8 50%, transparent 75%);
+            background-position: center bottom;
+            background-size: 0% 0%;
+            background-repeat: no-repeat;
+            font-weight: bold;
+            border-radius: 5px;
+            width: 80px;
+            height: 30px;
+            transition: background-size 100ms 0ms ease;
+            will-change: background-size, transform;
+            }
+        .button:hover {
+        background-size: 200% 200%;
+        transition: background-size 320ms 0ms ease;
+        }
+        .button.-primary {
+        background-color: #1296db;
+        background-image: radial-gradient(ellipse at bottom, #1684c0 50%, transparent 75%);
+        color: #fff;
+        }
+
+        .performance > div > span.dataset {
+            display: block;
+            font-size: 25px;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            font-weight: 400;
+        }
+        .performance > div > table.dataset {
+            margin: auto;
+            border-collapse: collapse;
+            border-top: 2px solid black;
+            border-bottom: 2px solid black; 
+            margin-top: 2px;
+        }
+        tr.split {
+            border-collapse: collapse;
+            border-top: 1px solid black;
+        }
+        tr.model_name {
+            font-size: 15px;
+        }
+        td {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        th {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        
+        ol.reference_content {
+            margin-top: 10px;
+            padding-left: 1.2em;
+            text-align: justify;
+            font-size: 15px;
+            /* font-family:  Century Gothic,CenturyGothic,AppleGothic,sans-serif;; */
+        }
+        li {
+            padding-bottom: 15px;
+        }
+        ul {
+            margin-top: 10px;
+            padding-left: 1.2em;
+            text-align: justify;
+            font-size: 17px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3 class="title">Partially Relevant Video Retrieval</h3>
+            <span class="title_content" style="border-top: 1.5px solid rgb(229, 229, 229);">
+                Given a natural language query, the task of PRVR aims to retrieve videos containing a moment that is semantically relevant to the
+                given query, from a large corpus of untrimmed videos. As the
+                moment referred to by the query is typically a small part of a
+                video, we argue that the query is partially relevant to the video.
+                It is worth pointing out that PRVR is different from conventional
+                T2VR retrieval, <b>where videos used for PRVR are much longer than that for T2VR.</b> 
+            </span>
+            <div>
+                <img src="pvr_imgs/retrieve examples.png" alt="" width="600px">
+                <img src="pvr_imgs/avg duration.png" alt="" width="400px">
+            </div>
+            <div class="benchmarks" style="margin-top: 20px;">
+                <h2 class="title_">Benchmarks</h2>
+                <span class="title_content" style="border-bottom: 1.5px solid rgb(229, 229, 229);">These leaderboards are used to track progress in Partially Relevant Video Retrieval</span>
+                <table class="dataset" width="900px" style="margin: 0 auto; margin-top: 10px; border-collapse:collapse;line-height: 30px;">
+                    <tr style="color: gray; ">
+                        <!-- <th colspan="5" align="left"></th> -->
+                        <th>Dataset</th>
+                        <th>Best Model</th>
+                        <th>Paper</th>
+                        <th>Code</th>
+                        <th>Compare</th>
+                    </tr>
+                    <tr class="dataset_info">
+                        <th style="width: 200px;">TV show Retrieval</th>
+                        <th style="width: 100px;">DL-DKD</th>
+                        <th><a href="https://arxiv.org/abs/2001.09099" style="color: #0096b1;">TVR: A Large-Scale Dataset for Video-Subtitle Moment Retrieval</a> </th>
+                        <th style="width: 100px;"><a href="https://github.com/jayleicn/TVRetrieval"><img src="pvr_imgs/github_dataset.png" alt=""style="width: 30px;"></a></th>
+                        <th><button class="button -primary" onclick="window.location.href='#perform_tvr'">See all</button></th>
+                    </tr>
+                    <tr class="dataset_info">
+                        <th>Activitynet Captions</th>
+                        <th>DL-DKD</th>
+                        <th><a href="https://arxiv.org/abs/1808.02536" style="color: #0096b1;">Dynamic Temporal Pyramid Network: A Closer Look at Multi-Scale Modeling for Activity Detection</a> </th>
+                        <th><a href="http://activity-net.org/"><img src="pvr_imgs/github_dataset.png" alt=""style="width: 30px;"></a></th>
+                        <th><button class="button -primary"onclick="window.location.href='#perform_ac'">See all</button></th>
+                    </tr>
+                    <tr class="dataset_info">
+                        <th>Charades-STA</th>
+                        <th>MS-SL</th>
+                        <th><a href="https://arxiv.org/abs/1705.02101" style="color: #0096b1;">TALL: Temporal Activity Localization via Language Query</a> </th>
+                        <th><a href="https://github.com/jiyanggao/TALL"><img src="pvr_imgs/github_dataset.png" alt="" style="width: 30px;"></a></th>
+                        <th><button class="button -primary"onclick="window.location.href='#perform_charades'">See all</button></th>
+                    </tr>
+                </table>
+            </div>
+            <div class="performance" style="margin-top: 20px;">
+                <h2 class="title_">Performance Comparison</h2>
+                <span class="title_content" style="border-bottom: 1.5px solid rgb(229, 229, 229);"></span>
+                <div>
+                    <span class="dataset" id="perform_tvr">On TV show Retrieval:</span>
+                    <table class="dataset" style="width: 500px;">
+                        <tr>
+                            <th colspan="5" align="left">Model</th>
+                            <th>R@1</th>
+                            <th>R@5</th>
+                            <th>R@10</th>
+                            <th>R@100</th>
+                            <th>SumR</th>
+                        </tr>
+                        <tr class="split">
+                            <td align="left"><em>T2VR models:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >W2VV, TMM18 <a href="#w2vv">[1]</a></td>
+                            <td>2.6</td>
+                            <td>5.6</td>
+                            <td>7.5</td>
+                            <td>20.6</td>
+                            <td>36.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">HGR, CVPR20 <a href="#hgr">[2]</a></td>
+                            <td>1.7</td>
+                            <td>4.9</td>
+                            <td>8.3</td>
+                            <td>35.2</td>
+                            <td>50.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">HTM, ICCV19 <a href="#htm">[3]</a></td>
+                            <td>3.8</td>
+                            <td>12.0</td>
+                            <td>19.1</td>
+                            <td>63.2</td>
+                            <td>98.2</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >CE, BMVC19 <a href="#ce">[4]</a></td>
+                            <td>3.7</td>
+                            <td>12.8</td>
+                            <td>20.1</td>
+                            <td>64.5</td>
+                            <td>101.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">W2VV++, MM19 <a href="#w2vv++">[5]</a></td>
+                            <td>5.0</td>
+                            <td>14.7</td>
+                            <td>21.7</td>
+                            <td>61.8</td>
+                            <td>103.2</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >VSE++, BMVC19 <a href="#vse++">[6]</a></td>
+                            <td>7.5</td>
+                            <td>19.9</td>
+                            <td>27.7</td>
+                            <td>66.0</td>
+                            <td>121.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">DE, CVPR19 <a href="#de">[7]</a></td>
+                            <td>7.6</td>
+                            <td>20.1</td>
+                            <td>28.1</td>
+                            <td>67.6</td>
+                            <td>123.4</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">DE++, TPAMI21 <a href="#de++">[8]</a></td>
+                            <td>8.8</td>
+                            <td>21.9</td>
+                            <td>30.2</td>
+                            <td>67.4</td>
+                            <td>128.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">RIVRL, TCSVT22 <a href="#rivrl">[9]</a></td>
+                            <td>9.4</td>
+                            <td>23.4</td>
+                            <td>32.2</td>
+                            <td>70.6</td>
+                            <td>135.6</td>
+                        </tr>
+                        <tr class="split">
+                            <td align="left" colspan="8"><em>VCMR models w/o moment localization:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">XML, ECCV20 <a href="#xml">[10]</a></td>
+                            <td>10.0</td>
+                            <td>26.5</td>
+                            <td>37.3</td>
+                            <td>81.3</td>
+                            <td>155.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">ReLoCLNet, SIGIR21 <a href="#relo">[11]</a></td>
+                            <td>10.7</td>
+                            <td>28.1</td>
+                            <td>38.1</td>
+                            <td>80.3</td>
+                            <td>157.1</td>
+                        </tr>
+                        <tr class="model_name split">
+                            <td colspan="5" align="left"><a href="#method_ms">MS-SL</a></td>
+                            <td>13.5</td>
+                            <td>32.1</td>
+                            <td>43.4</td>
+                            <td>83.4</td>
+                            <td>172.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left"><a href="#method_dl">DL-DKD</a></td>
+                            <td>14.4</td>
+                            <td>34.9</td>
+                            <td>45.8</td>
+                            <td>84.9</td>
+                            <td>179.9</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <span class="dataset" id="perform_ac">On Activitynet Captions:</span>
+                    <table class="dataset" style="width: 500px;">
+                        <tr>
+                            <th colspan="5" align="left">Model</th>
+                            <th>R@1</th>
+                            <th>R@5</th>
+                            <th>R@10</th>
+                            <th>R@100</th>
+                            <th>SumR</th>
+                        </tr>
+                        <tr class="split">
+                            <td align="left"><em>T2VR models:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >W2VV <a href="#w2vv">[1]</a></td>
+                            <td>2.2</td>
+                            <td>9.5</td>
+                            <td>16.6</td>
+                            <td>45.5</td>
+                            <td>73.8</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">HTM <a href="#htm">[3]</a></td>
+                            <td>3.7</td>
+                            <td>13.7</td>
+                            <td>22.3</td>
+                            <td>66.2</td>
+                            <td>105.9</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">HGR <a href="#hgr">[2]</a></td>
+                            <td>4.0</td>
+                            <td>15.0</td>
+                            <td>24.8</td>
+                            <td>63.2</td>
+                            <td>107.0</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >RIVRL <a href="#rivrl">[9]</a></td>
+                            <td>5.2</td>
+                            <td>18.0</td>
+                            <td>28.2</td>
+                            <td>66.4</td>
+                            <td>117.8</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">VSE++ <a href="#vse++">[6]</a></td>
+                            <td>4.9</td>
+                            <td>17.7</td>
+                            <td>28.2</td>
+                            <td>67.1</td>
+                            <td>117.9</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >DE++ <a href="#de++">[8]</a></td>
+                            <td>5.3</td>
+                            <td>18.4</td>
+                            <td>29.2</td>
+                            <td>68.0</td>
+                            <td>121.0</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">DE <a href="#de">[7]</a></td>
+                            <td>5.6</td>
+                            <td>18.8</td>
+                            <td>29.4</td>
+                            <td>67.8</td>
+                            <td>121.7</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">W2VV++ <a href="#w2vv++">[5]</a></td>
+                            <td>5.4</td>
+                            <td>18.7</td>
+                            <td>29.7</td>
+                            <td>68.8</td>
+                            <td>122.6</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">CE <a href="#ce">[4]</a></td>
+                            <td>5.5</td>
+                            <td>19.1</td>
+                            <td>29.9</td>
+                            <td>71.1</td>
+                            <td>125.6</td>
+                        </tr>
+                        <tr class="split">
+                            <td align="left" colspan="8"><em>VCMR models w/o moment localization:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">XML <a href="#xml">[10]</a></td>
+                            <td>5.7</td>
+                            <td>18.9</td>
+                            <td>30.0</td>
+                            <td>72.0</td>
+                            <td>126.6</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">ReLoCLNet <a href="#relo">[11]</a></td>
+                            <td>5.3</td>
+                            <td>19.4</td>
+                            <td>30.6</td>
+                            <td>73.1</td>
+                            <td>128.4</td>
+                        </tr>
+                        <tr class="model_name split">
+                            <td colspan="5" align="left"><a href="#method_ms">MS-SL</a></td>
+                            <td>7.1</td>
+                            <td>22.5</td>
+                            <td>34.7</td>
+                            <td>75.8</td>
+                            <td>140.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left"><a href="#method_dl">DL-DKD</a></td>
+                            <td>8.0</td>
+                            <td>25.0</td>
+                            <td>37.5</td>
+                            <td>77.1</td>
+                            <td>147.6</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <span class="dataset" id="perform_charades">On Charades-STA:</span>
+                    <table class="dataset" style="width: 500px;">
+                        <tr>
+                            <th colspan="5" align="left">Model</th>
+                            <th>R@1</th>
+                            <th>R@5</th>
+                            <th>R@10</th>
+                            <th>R@100</th>
+                            <th>SumR</th>
+                        </tr>
+                        <tr class="split">
+                            <td align="left"><em>T2VR models:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >W2VV <a href="#w2vv">[1]</a></td>
+                            <td>0.5</td>
+                            <td>2.9</td>
+                            <td>4.7</td>
+                            <td>24.5</td>
+                            <td>32.6</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">VSE++ <a href="#vse++">[6]</a></td>
+                            <td>0.8</td>
+                            <td>3.9</td>
+                            <td>7.2</td>
+                            <td>31.7</td>
+                            <td>43.6</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">W2VV++ <a href="#w2vv++">[5]</a></td>
+                            <td>0.9</td>
+                            <td>3.5</td>
+                            <td>6.6</td>
+                            <td>34.3</td>
+                            <td>45.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >HGR <a href="#hgr">[2]</a></td>
+                            <td>1.2</td>
+                            <td>3.8</td>
+                            <td>7.3</td>
+                            <td>33.4</td>
+                            <td>45.7</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">CE <a href="#ce">[4]</a></td>
+                            <td>1.3</td>
+                            <td>4.5</td>
+                            <td>7.3</td>
+                            <td>36.0</td>
+                            <td>49.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left" >DE <a href="#de">[7]</a></td>
+                            <td>1.5</td>
+                            <td>5.7</td>
+                            <td>9.5</td>
+                            <td>36.9</td>
+                            <td>53.7</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">DE++ <a href="#de++">[8]</a></td>
+                            <td>1.7</td>
+                            <td>5.6</td>
+                            <td>9.6</td>
+                            <td>37.1</td>
+                            <td>54.1</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">RIVRL <a href="#rivrl">[9]</a></td>
+                            <td>1.6</td>
+                            <td>5.6</td>
+                            <td>9.4</td>
+                            <td>37.7</td>
+                            <td>54.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">HTM <a href="#htm">[3]</a></td>
+                            <td>1.2</td>
+                            <td>5.4</td>
+                            <td>9.2</td>
+                            <td>44.2</td>
+                            <td>60.0</td>
+                        </tr>
+                        <tr class="split">
+                            <td align="left" colspan="8"><em>VCMR models w/o moment localization:</em></td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">XML <a href="#xml">[10]</a></td>
+                            <td>1.2</td>
+                            <td>5.4</td>
+                            <td>10.0</td>
+                            <td>45.6</td>
+                            <td>62.3</td>
+                        </tr>
+                        <tr class="model_name">
+                            <td colspan="5" align="left">ReLoCLNet <a href="#relo">[11]</a></td>
+                            <td>1.6</td>
+                            <td>6.0</td>
+                            <td>10.1</td>
+                            <td>46.9</td>
+                            <td>64.6</td>
+                        </tr>
+                        <tr class="model_name split">
+                            <td colspan="5" align="left"><a href="#method_ms">MS-SL</a></td>
+                            <td>1.8</td>
+                            <td>7.1</td>
+                            <td>11.8</td>
+                            <td>47.7</td>
+                            <td>68.4</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="methods" style="margin-top: 20px;">
+                    <h2 class="title_">Methods</h2>
+                    <span class="title_content" style="border-bottom: 1.5px solid rgb(229, 229, 229);"></span>
+                    <table class="method" width="900px" style="margin: 0 auto; margin-top: 10px; border-collapse:collapse;line-height: 30px;">
+                        <tr style="color: gray; ">
+                            <th style="text-align: left;">Model</th>
+                            <th>Paper</th>
+                            <th>Code</th>
+                            <th>Year</th>
+                        </tr>
+                        <tr class="method_info" id="method_dl">
+                            <th style="width: 200px; text-align: left; font-weight: bold;">DL-DKD</th>
+                            <th style="width: 250px;"><a href="" style="color: #0096b1;">Dual Learning with Dynamic Knowledge Distillation for
+                                Partially Relevant Video Retrieval</a></th>
+                            <th><a href="https://github.com/HuiGuanLab/DL-DKD"><img src="pvr_imgs/github_dataset.png" alt="" style="width: 30px;"></a> </th>
+                            <th style="font-weight: lighter;">2023</th>
+                        </tr>
+                        <tr class="method_info" id="method_ms">
+                            <th style="width: 200px; text-align: left; font-weight: bold;">MS-SL</th>
+                            <th style="width: 250px;"><a href="https://arxiv.org/abs/2208.12510" style="color: #0096b1;">Partially Relevant Video Retrieval</a></th>
+                            <th><a href="https://github.com/HuiGuanLab/ms-sl"><img src="pvr_imgs/github_dataset.png" alt="" style="width: 30px;"></a> </th>
+                            <th style="font-weight: lighter;">2022</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="reference" style="margin-top: 30px;">
+                    <h2 class="title_">Reference</h2>
+                    <span class="title_content" style="border-bottom: 1.5px solid rgb(229, 229, 229);"></span>
+                    <ol class="reference_content">
+                        <li id="w2vv">
+                            Jianfeng Dong, Xirong Li, and Cees GM Snoek. 2018. Predicting visual features
+                            from text for image and video caption retrieval. <em>IEEE Transactions on Multimedia.</em>
+                            20, 12 (2018), 3377–3388.
+                        </li>
+                        <li id="hgr">
+                            Shizhe Chen, Yida Zhao, Qin Jin, and Qi Wu. 2020. Fine-grained Video-Text
+                            Retrieval with Hierarchical Graph Reasoning. <em>In Proceedings of the IEEE/CVF
+                            Conference on Computer Vision and Pattern Recognition.</em> 10638–10647.
+                        </li>
+                        <li id="htm">
+                            Antoine Miech, Dimitri Zhukov, Jean-Baptiste Alayrac, Makarand Tapaswi, Ivan
+                            Laptev, and Josef Sivic. 2019. HowTo100M: Learning a text-video embedding by
+                            watching hundred million narrated video clips. <em>In Proceedings of the IEEE/CVF
+                            International Conference on Computer Vision.</em> 2630–2640.
+                        </li>
+                        <li id="ce">
+                            Yang Liu, Samuel Albanie, Arsha Nagrani, and Andrew Zisserman. 2019. Use
+                            what you have: Video retrieval using representations from collaborative experts.
+                            <em>arXiv preprint arXiv:1907.13487 (2019).</em>
+                        </li>
+                        <li id="w2vv++">
+                            Xirong Li, Chaoxi Xu, Gang Yang, Zhineng Chen, and Jianfeng Dong. 2019.
+                            W2VV++: Fully deep learning for ad-hoc video search. <em>In Proceedings of the 27th
+                                ACM International Conference on Multimedia.</em>  1786–1794.
+                        </li>
+                        <li id="vse++">
+                            Fartash Faghri, David J Fleet, Jamie Ryan Kiros, and Sanja Fidler. 2018. VSE++:
+                            Improving visual-semantic embeddings with hard negatives. <em>In Proceedings of
+                                the British Machine Vision Conference.</em> 935–943.
+                        </li>
+                        <li id="de">
+                            Jianfeng Dong, Xirong Li, Chaoxi Xu, Shouling Ji, Yuan He, Gang Yang, and Xun
+                            Wang. 2019. Dual encoding for zero-example video retrieval. <em>In Proceedings of
+                                the IEEE/CVF Conference on Computer Vision and Pattern Recognition.</em> 9346–9355.
+                        </li>
+                        <li id="de++">
+                            Jianfeng Dong, Xirong Li, Chaoxi Xu, Xun Yang, Gang Yang, Xun Wang, and
+                            Meng Wang. 2021. Dual encoding for video retrieval by text. <em>IEEE Transactions
+                                on Pattern Analysis and Machine Intelligence</em>  (2021), 1-1.
+                        </li>
+                        <li id="rivrl">
+                            Jianfeng Dong, Yabing Wang, Xianke Chen, Xiaoye Qu, Xirong Li, Yuan He, and
+                            Xun Wang. 2022. Reading-strategy Inspired Visual Representation Learning
+                            for Text-to-Video Retrieval. <em>IEEE Transactions on Circuits and Systems for Video
+                                Technology</em> (2022).
+                        </li>
+                        <li id="xml">
+                            Jie Lei, Licheng Yu, Tamara L Berg, and Mohit Bansal. 2020. TVR: A large-scale
+                            dataset for video-subtitle moment retrieval. <em>In European Conference on Computer
+                                Vision.</em> 447–463.
+                        </li>
+                        <li id="relo">
+                            Hao Zhang, Aixin Sun, Wei Jing, Guoshun Nan, Liangli Zhen, Joey Tianyi Zhou,
+                            and Rick Siow Mong Goh. 2021. Video corpus moment retrieval with contrastive
+                            learning. <em>In Proceedings of the 44th International ACM SIGIR Conference on Research
+                                and Development in Information Retrieval.</em> 685–695.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</body>
+</html>
