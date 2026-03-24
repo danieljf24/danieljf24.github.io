@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAST: Context-Aware Latent Space Transformation for Interactive Retrieval</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f8fc;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 20px;
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #f8fbff 0%, #f7f8fc 18%, #f7f8fc 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(var(--maxw), calc(100% - 32px));
+      margin: 0 auto;
+    }
+	
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(247, 248, 252, 0.82);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 70px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.05rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    .hero {
+      padding: 72px 0 36px;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top right, rgba(37,99,235,0.10), transparent 28%),
+                  linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      border: 1px solid #edf1f7;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 52px 46px 42px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-dark);
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 0 auto;
+      max-width: 980px;
+      font-size: clamp(2.1rem, 4.6vw, 3.65rem);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 880px;
+      text-align: center;
+    }
+
+    .authors,
+    .affiliations {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .authors {
+      margin-top: 20px;
+      color: #374151;
+      font-size: 1.6rem;
+    }
+
+    .affiliations {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .authors strong { font-weight: 1000; }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.97rem;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(37,99,235,0.18);
+    }
+
+    .btn.primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn.secondary {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .btn.secondary:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    .section {
+      padding: 18px 0 8px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      color: var(--black);
+      max-width: 1200px;
+    }
+
+    .kicker {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .subsection-title {
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #111827;
+      letter-spacing: -0.02em;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .abstract-text {
+      max-width: 980px;
+      margin: 0 auto;
+      color: #1f2937;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      line-height: 1.9;
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .highlight-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .highlight-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      letter-spacing: -0.02em;
+    }
+
+    .method-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .flow-step {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 170px;
+    }
+
+    .flow-step .step-num {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .flow-step h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .figure-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .figure-placeholder {
+      background:
+        linear-gradient(135deg, rgba(37,99,235,0.09), rgba(37,99,235,0.02)),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.35),
+          rgba(255,255,255,0.35) 1px,
+          transparent 1px,
+          transparent 90px
+        );
+      min-height: 380px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+
+    }
+
+    .figure-inner {
+      width: 100%;
+      max-width: 940px;
+      background: rgba(255,255,255,0.75);
+      border: 1px dashed #bfd4ff;
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(3px);
+    }
+
+    .mini-flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mini-box {
+      background: #fff;
+      border: 1px solid #dbe5f4;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1f2937;
+      min-height: 90px;
+      display: grid;
+      place-items: center;
+    }
+
+    .arrow {
+      font-size: 1.35rem;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .caption {
+      padding: 18px 24px 22px;
+      font-size: 1.1rem;
+      text-align: justify;
+      text-justify: inter-word;
+      line-height: 1.8;
+      hyphens: auto;
+    }
+
+    .caption-divider {
+      height: 1px;
+      background: #d1d5db;
+      margin: 18px 0 16px;
+      border: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: center;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    td:first-child, th:first-child { text-align: left; }
+    tr:last-child td { border-bottom: none; }
+    .best { font-weight: 800; color: var(--primary-dark); }
+
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .case-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .case-image {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #edf4ff, #f9fbff);
+      display: grid;
+      place-items: center;
+      color: #3b82f6;
+      font-weight: 800;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .case-body { padding: 18px; }
+    .case-body h3 { margin: 0 0 10px; font-size: 1rem; }
+
+    .dialogue {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .bubble {
+      padding: 12px 14px;
+      border-radius: 16px;
+      max-width: 92%;
+      font-size: 0.94rem;
+    }
+
+    .bubble.q {
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      justify-self: start;
+    }
+
+    .bubble.a {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      justify-self: end;
+    }
+
+    .demo-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .demo-placeholder {
+      border: 1.5px dashed #c7d2fe;
+      border-radius: 18px;
+      padding: 28px;
+      min-height: 240px;
+      background: linear-gradient(180deg, #fafcff 0%, #f5f8ff 100%);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #4b5563;
+    }
+
+    .code-block {
+      margin: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      border: 1px solid #1e293b;
+    }
+
+    footer {
+      padding: 28px 0 56px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-card {
+      padding: 22px 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+	
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 26px;
+      margin-top: 18px;
+    }
+
+    .result-block {
+      display: block;
+    }
+
+    .result-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .result-figure-wrap {
+      padding: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(37,99,235,0.05), transparent 24%),
+        #ffffff;
+    }
+
+    .result-figure {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      border: 1px solid #e8edf5;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .result-caption {
+      padding: 0 24px 22px;
+      font-size: 1.1rem;
+      line-height: 1.75;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+    }
+
+    .result-caption strong {
+      color: #111827;
+    }
+
+    @media (max-width: 640px) {
+      .result-figure-wrap,
+      .result-caption {
+        padding-left: 16px;
+        padding-right: 16px;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .highlight-grid,
+      .cases,
+      .method-flow,
+      .demo-box {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow { display: none; }
+
+      .hero-card { padding: 34px 26px; }
+      .figure-placeholder { min-height: 280px; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(var(--maxw), calc(100% - 20px)); }
+      .nav-inner { min-height: 64px; }
+      .nav-links { display: none; }
+      .hero { padding-top: 32px; }
+      .hero-card { padding: 24px 18px; border-radius: 22px; }
+      .panel { padding: 20px; }
+      .hero-actions { gap: 10px; }
+      .btn { width: 100%; }
+      h1 { max-width: 100%; }
+      .subtitle { max-width: 100%; }
+      .abstract-text {
+        text-align: left;
+        hyphens: none;
+      }
+      .caption,
+      .result-caption {
+        text-align: left;
+        hyphens: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">CAST Project Page</a>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#ack">Acknowledgments</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container">
+      <div class="hero-card">
+        <div class="badge">CVPR 2026</div>
+
+        <h1>CAST: Context-Aware Latent Space Transformation for Interactive Retrieval</h1>
+
+        <div class="authors">
+          Xuanzuo Lin<sup>1,2</sup>, Min Zhang<sup>3</sup>, Daizong Liu<sup>4†</sup>, Zhiwen Zuo<sup>1,2</sup>, Xun Yang<sup>5</sup>, Changting Lin<sup>6</sup>, Xun Wang<sup>1,2</sup>, Jianfeng Dong<sup>1,2†</sup>
+        </div>
+
+        <div class="affiliations">
+          <sup>1</sup>Zhejiang Gongshang University, <sup>2</sup>Zhejiang Key Laboratory of Big Data and Future E-Commerce Technology, <sup>3</sup>East China Normal University, <sup>4</sup>Wuhan University, <sup>5</sup>University of Science and Technology of China, <sup>6</sup>Zhejiang University
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#" target="_blank" rel="noopener">📄 Paper</a>
+          <a class="btn secondary" href="https://github.com/HuiGuanLab/CAST" target="_blank" rel="noopener">💻 Code</a>
+          <a class="btn secondary" href="#" target="_blank" rel="noopener">📚 arXiv</a>
+          <a class="btn secondary" href="#" target="_blank" rel="noopener">🚀 Demo</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="abstract">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Abstract</div>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="abstract-text">
+            Interactive Text-to-Image Retrieval (I-TIR) aims to refine image retrieval results through natural language dialogues, which allows users to progressively supplement or correct their search intention across multiple rounds, enabling a more precise and user-aligned visual search experience. However, existing methods perform cross-modal retrieval within a fixed multimodal feature space, mapping all dialogue text and images onto the same static embedding manifold. Such a static formulation easily causes semantic vagueness, making it difficult to capture subtle embedding shifts in the user's updated intention for fine-grained retrieval. To address this limitation, we propose Context-Aware Latent Space Transformation (CAST), a lightweight framework that dynamically transforms the common latent space of both textual and visual representations according to the specific evolving user's search intention, enabling fine-grained and adaptive semantic alignment. The core of CAST is the Context-Aware Space Regulator (CASR), a crucial space transformation module composed of two key components: (1) the Context-Aware Low-Rank Projector (CLP), which learns to predict the projection direction of embedding space based on the intent's context; and (2) the Context-Guided Modulator (CGM), which adaptively determines appropriate projection strength. CASR is highly lightweight, adding negligible parameters and computational overhead, and can be seamlessly integrated into diverse I-TIR frameworks. Extensive experiments demonstrate the effectiveness of our proposed framework, indicating that it can serve as a general, plug-and-play solution for efficient and scalable interactive text-to-image retrieval.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Method</div>
+          </div>
+        </div>
+        <div class="panel figure-card">
+          <div class="figure-placeholder" style="background: #fff; padding: 24px;">
+            <img
+              src="cast_imgs/framework.png"
+              alt="CAST framework overview"
+              style="width: 100%; height: auto; border-radius: 16px; object-fit: contain;"
+            />
+          </div>
+          <div class="caption">
+            (a) A traditional interactive text-to-image retrieval framework using a static multimodal latent space for cross-modal alignment. (b) Illustration of our proposed context-aware dynamic latent space transformation, which aims to dynamically transform the static multimodal latent space into a new space according to the user's search intention. (c) The CASR consists of two key modules: The CLP module provides the direction for the feature space transformation, while the CGM module controls the strength of the transformation.
+
+            <hr class="caption-divider">
+
+            Despite recent progress in interactive retrieval, most existing frameworks operate within a static multimodal feature space, assuming that the relationship between text and images remains fixed across all dialogue rounds. However, interactive retrieval is inherently dynamic: each user response provides new semantic constraints that refine and reshape the retrieval intent. When the feature space itself remains unchanged, these evolving semantics are merely projected into the same embedding geometry, causing the query to drift without truly reflecting the updated intent. As a result, subtle contextual cues such as newly mentioned attributes or refined object relations are easily lost in static representations. This limitation motivates a new perspective: each dialogue round should act as a contextual modulation step that dynamically transform the multimodal representation space according to the current intent contexts. By allowing both textual and visual embeddings to evolve in response to dialogue context, the retrieval system can continuously refocus on semantically relevant regions, achieving finer-grained alignment and more faithful modeling of user intent.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="results">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Results</div>
+          </div>
+        </div>
+
+        <div class="results-grid">
+
+          <div class="result-block">
+            <div class="subsection-title">Quantitative Results on VisDial</div>
+            <div class="result-card">
+              <div class="result-figure-wrap">
+                <img
+                  src="cast_imgs/main result.png"
+                  class="result-figure"
+                />
+              </div>
+              <div class="result-caption">
+                <strong>Table 1.</strong> We compare CAST with state-of-the-art interactive retrieval methods on VisDial.
+                Unlike previous approaches that perform retrieval in a fixed multimodal latent space,
+                our method dynamically adapts the latent space according to the dialogue context,
+                leading to more precise and fine-grained cross-modal alignment across interaction rounds.
+              </div>
+            </div>
+          </div>
+
+          <div class="result-block">
+            <div class="subsection-title">Robustness across Various Dialogue Styles</div>
+            <div class="result-card">
+              <div class="result-figure-wrap">
+                <img
+                  src="cast_imgs/avg_recall.png"
+                  class="result-figure"
+                />
+              </div>
+              <div class="result-caption">
+                <strong>Figure 1.</strong> Our method remains consistently effective under different dialogue sources and styles,
+                demonstrating strong adaptability and robustness in diverse interactive retrieval scenarios.
+              </div>
+            </div>
+          </div>
+
+          <div class="result-block">
+            <div class="subsection-title">Integration with Existing Frameworks</div>
+            <div class="result-card">
+              <div class="result-figure-wrap">
+                <img
+                  src="cast_imgs/intergration.png"
+                  class="result-figure"
+                />
+              </div>
+              <div class="result-caption">
+                <strong>Figure 2.</strong> Performance of different methods without or with our proposed context-aware space regulator on the VisDial dataset.
+                Using our proposed module consistently improves performance, showing it can serve as a plug-and-play module for enhancing I-TIR.
+              </div>
+            </div>
+          </div>
+
+          <div class="result-block">
+            <div class="subsection-title">Visualization</div>
+            <div class="result-card">
+              <div class="result-figure-wrap">
+                <img
+                  src="cast_imgs/visualization.png"
+                  class="result-figure"
+                />
+              </div>
+              <div class="result-caption">
+                <strong>Figure 3.</strong> t-SNE visualization shows the 100 images about the topic of dog. The red bounding box marks a sample image, with its local
+                region zoomed-in to illustrate space transformation. When the input dialogue context is “a black dog”, the feature space seems to be
+                transformed into a new space of emphasizing color distinctions. As a result, images with the “black” attribute are brought closer together in
+                the transformed space. Similarly, when the dialogue context is “a dog on the grass”, the space adjusts to prioritize scene, bringing images
+                in grassy environments closer together. This demonstrates how the input context dynamically transforms the representation of the images,
+                highlighting the model’s ability to adapt its feature space according to context.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ack">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Acknowledgments</div>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="abstract-text">
+            This work was supported by the National Key Research and Development Program of China (No. 2023YFC3304902), Pioneer and Leading Goose R&D Program of Zhejiang (No. 2024C01110), National Natural Science Foundation of China (No. 62472385, 62306278), Young Elite Scientists Sponsorship Program by China Association for Science and Technology (No. 2022QNRC001), Fundamental Research Funds for the Provincial Universities of Zhejiang (No. FR2402ZD) and Tongxiang Institute of Artificial General Intelligence (No. TAGI2-B-2024-0004).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="citation">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Citation</div>
+          </div>
+        </div>
+
+        <div class="panel">
+<pre class="code-block">@inproceedings{lin2026cast,
+  title     = {CAST: Context-Aware Latent Space Transformation for Interactive Retrieval},
+  author    = {Lin, Xuanzuo and Zhang, Min and Liu, Daizong and Zuo, Zhiwen and Yang, Xun and Lin, Changting and Wang, Xun and Dong, Jianfeng},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2026}
+}</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
